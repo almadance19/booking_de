@@ -49,7 +49,7 @@ const repMessage = document.querySelector('.rep');
 //event listener buttons 
 btnPayment.addEventListener('click', showPaymentModal);
 btnPayments.addEventListener('click', showPaymentsModal);
-btnPaypal.addEventListener('click', paymentForm);
+btnPaypal.addEventListener('click', showMemberships);
 btnEmail.addEventListener('click', getUser);
 btnBookaclass.addEventListener('click', bookClasses);
 
@@ -92,7 +92,6 @@ function getData() {
         displayTable += '</thead>';
         var coma = ",";
 
-  output.innerHTML = "loading...";
 
   fetch(url).then(function (rep) {
     return rep.json()
@@ -112,9 +111,6 @@ function getData() {
       console.log(val);
       }
        
-      //let html = document.createElement('div');
-      //html.innerHTML = val[0] + ' ' + val[1] + ' ' + val[2] + '<br>';
-      //output.appendChild(html);
     } 
     )
         displayTable += '</table>';
@@ -143,18 +139,73 @@ function getPrices() {
       const promocode_value_monthly = val[1];
       dict_prices_monthly[promocode] = promocode_value_monthly;
 
+      var list = document.getElementsByClassName("price-container");
+      for (var i = 0; i < list.length; i++) {
+      //console.log(list[i].id); 
+      if (list[i].id==val[0] ) {
+        document.getElementById(list[i].id).getElementsByTagName('span')[0].innerHTML=" "+val[1]+" EUR";
+
+        var inputEl = document.createElement('input'); 
+        inputEl.type = 'button';
+        inputEl.className = "btn btn-primary"; 
+        inputEl.value = "One-time payment";
+        inputEl.style = "margin: 0px 4px 8px 3px;";
+
+        inputEl.addEventListener('click', function() { 
+            Create_Payment_Form(val[0],val[2],val[5],val[6]); 
+        });
+        document.getElementById(list[i].id).appendChild(inputEl); 
+
+      }
+
+      if (list[i].id==val[0] & val[7]!="NO" ) {
+        document.getElementById(list[i].id).getElementsByTagName('span')[0].innerHTML=" "+val[1]+" EUR EUR (Monthly)";
+        var inputEl = document.createElement('input'); 
+        inputEl.type = 'button';
+        inputEl.className = "btn btn-primary"; 
+        inputEl.value = "Monthly Subscription";
+        inputEl.style = "margin: 0px 4px 8px 3px;";
+
+        inputEl.addEventListener('click', function() { 
+          Create_Payment_Form_Abo(val[0],val[1],val[5],val[7]); 
+        });
+        document.getElementById(list[i].id).appendChild(inputEl); 
+
+      }
+}
 
     } 
     )
         console.log("current prices");    
         console.log(dict_prices);
         console.log(dict_prices_monthly);
-        return dict_prices,dict_prices_monthly
-            
+        return dict_prices,dict_prices_monthly    
   })
-
 };
 
+function showMemberships(){
+  document.querySelector(".section-1").style.display = 'block';
+  document.querySelector(".section-2").style.display = 'none';
+  document.getElementById("stripe-container").style.display = 'block';
+  document.getElementById("stripe-container").className = "row";
+  document.getElementById("payment-block").style.display = 'none';
+  btnBookaclass.style.display = "block";
+};
+
+function Create_Payment_Form(membership, price_total,nr_months,stripe_link) { 
+  //output.innerHTML = "membership " + membership + "price_month " + price_total+"price_total " + price_total+"nr_months " + nr_months;
+  paymentForm(membership, price_total,nr_months,stripe_link,"One-time payment"); 
+  document.getElementById("stripe-container").style.display = 'none';
+  document.getElementById("payment-block").style.display = 'block';
+
+} 
+
+function Create_Payment_Form_Abo(membership, price_total,nr_months,stripe_link) { 
+  //output.innerHTML = "membership " + membership + "price_month " + price_total+"price_total " + price_total+"nr_months " + nr_months;
+  paymentForm(membership, price_total,nr_months,stripe_link,"Monthly Subscription");
+  document.getElementById("stripe-container").style.display = 'none';
+  document.getElementById("payment-block").style.display = 'block';
+} 
 
 
 // create book class modal
@@ -281,6 +332,7 @@ function getUser() {
           nextpaymentinput.value = val[4];
           btnPaypal.innerHTML = "Register";
           btnBookaclass.innerHTML = "Book a Free Trial Class";
+          btnBookaclass.style.display = "block";
           btnPaypal.style.display = "block";
           btnPayment.style.display = "none";
           btnPayments.style.display = "none";
@@ -303,12 +355,16 @@ function getUser() {
           btnPayments.style.display = "block";
           btnPaypal.style.display = "block";
           btnPaypal.innerHTML = "Register a Payment";
+          btnBookaclass.innerHTML = "Book a Class";
+          btnBookaclass.style.display = "block";
+          
         }
         });
         showPayment(data.activepayment);
         showAllePayments(data.historypayments);
-        document.querySelector(".section-1").style.display = 'none';
-        document.querySelector(".section-2").style.display = 'block';
+        //document.querySelector(".section-1").style.display = 'none';
+        //document.querySelector(".section-2").style.display = 'block';
+        //document.getElementById("stripe-container").style.display = 'none';
       });
       } else {
         output.innerHTML = "Enter a valid email";
@@ -547,7 +603,9 @@ function bookClasses() {
   document.getElementById("price_shield").style.display = "none";
 }
 
-function paymentForm()
+
+
+function paymentForm(membership, price_total,nr_months,stripe_link,payment_type)
 {
     document.querySelector(".section-1").style.display = 'block';
     var name_user = document.getElementById("User_name").value;
@@ -614,6 +672,16 @@ function paymentForm()
     displayTable += '</select>';
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
+    displayTable += '<label for="membership" style="font-weight: bold" >Selected Membership</label>';
+    displayTable += "<input type=\"text\" id=\"membership\" class=\"form-control\"   placeholder=\"Example +49 123 04235673\" Value=\""+membership+"\" disabled>";
+    displayTable += '<small id="newmemberlHelp" class="form-text text-muted" style="color:yellow" >** Optional value.</small>';
+    displayTable += '</div>';
+    displayTable += '<div class="form-row">';
+    displayTable += '<label for="payment_type" style="font-weight: bold" >Payment Type</label>';
+    displayTable += "<input type=\"text\" id=\"payment_type\" class=\"form-control\"   placeholder=\"Example +49 123 04235673\" Value=\""+payment_type+"\" disabled>";
+    displayTable += '<small id="newmemberlHelp" class="form-text text-muted" style="color:yellow" >** Optional value.</small>';
+    displayTable += '</div>';
+    displayTable += '<div class="form-row">';
     displayTable += '<label for="newmember" style="font-weight: bold" >Phone/Telefonnummer (optional) </label>';
     displayTable += "<input type=\"phone\" id=\"newmember\" class=\"form-control\"   placeholder=\"Example +49 123 04235673\" Value=\""+""+"\" >";
     displayTable += '<small id="newmemberlHelp" class="form-text text-muted" style="color:yellow" >** Optional value.</small>';
@@ -625,25 +693,24 @@ function paymentForm()
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
     displayTable += '<label for="pricemonthly" style="font-weight: bold" >Price / Preis EUR (Monthly)</label>';
-    displayTable += "<input type=\"text\" id=\"pricemonthly\" class=\"form-control\" aria-describedby=\"pricemonthlyHelp\" Value=\""+"Calculate with Button below"+"\" disabled>";
+    displayTable += "<input type=\"text\" id=\"pricemonthly\" class=\"form-control\" aria-describedby=\"pricemonthlyHelp\" Value=\""+price_total+"\" disabled>";
     displayTable += '<small id="pricemonthlyHelp" class="form-text text-muted" style="color:yellow" >**monthly Price for 3/6/12 months subscriptions </small>';
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
     displayTable += '<label for="price" style="font-weight: bold" >Price / Preis EUR (Total)</label>';
-    displayTable += "<input type=\"text\" id=\"price_course\" class=\"form-control\" aria-describedby=\"priceHelp\" Value=\""+"Calculate with Button below"+"\" disabled>";
+    displayTable += "<input type=\"text\" id=\"price_course\" class=\"form-control\" aria-describedby=\"priceHelp\" Value=\""+price_total+"\" disabled>";
     displayTable += '<small id="priceHelp" class="form-text text-muted" style="color:yellow" >**You can only pay monthly or all at once (3/6/12 months) with a Bank Regular Order </small>';
     displayTable += '</div>';
     displayTable += '<div class="form-group col-md-3">';
-    displayTable += "<input type=\"button\" value=\"Get Price\" id=\"getPrice\" class=\"btn btn-dark\" ";
-    displayTable += " onclick=\"priceCalculation()\" />";
-    displayTable += '</div>';
-    displayTable += '<div class="form-group col-md-3">';
-    displayTable += "<input type=\"button\" value=\"Select Courses Again\" style=\"display:none\"  id=\"selectPriceAgain\" class=\"btn btn-dark\" ";
+    displayTable += "<input type=\"button\" value=\"Select Payment Method Again\" style=\"display:none\"  id=\"selectPriceAgain\" class=\"btn btn-dark\" ";
     displayTable += " onclick=\"enablePriceCalculation()\"/disabled>";
     displayTable += '</div>';
     displayTable += '<div class="form-group col-md-3">';
-    displayTable += "<input type=\"button\" value=\"Pay\"  style=\"display:none\"  id=\"blockPrice\" class=\"btn btn-dark\" ";
-    displayTable += " onclick=\"blockPriceF()\" / disabled >";
+    displayTable += "<input type=\"button\" value=\"Pay\"  style=\"display:block\"  id=\"blockPrice\" class=\"btn btn-dark\" ";
+    displayTable += " onclick=\"blockPriceF()\" />";
+    displayTable += '</div>';
+    displayTable += '<div class="form-group col-md-3">';
+    displayTable += "<a class=\"btn btn-dark\" href=\""+stripe_link+"\" id=\"addStripe\" style=\"display:none;text-align:left\">Pay with Stripe</a>";
     displayTable += '</div>';
     displayTable += '<div class="form-group col-md-3">';
     displayTable += "<input type=\"button\" value=\"Pay with Paypal (+2 EUR Fee)\" style=\"display:none\"  id=\"addPaypal\" class=\"btn btn-dark\" ";
@@ -657,65 +724,27 @@ function paymentForm()
     displayTable += "<input type=\"button\" value=\"Register & Send me Email with Payment Infos\" style=\"display:none\"  id=\"sendPaymentEmail\" class=\"btn btn-dark\" ";
     displayTable += " onclick=\"bankProcess_sendEmail()\" / disabled>";
     displayTable += '</div>';
+    displayTable += '<div class="form-group col-md-3">';
+    displayTable += "<input type=\"button\" value=\"Select Membership Again\" id=\"getMembership\" class=\"btn btn-dark\" ";
+    displayTable += " onclick=\"selectMembership()\" />";
+    displayTable += '</div>';
     displayTable += "</div>";
     displayTable += "</div>";
     $("#pay-form-container").html(displayTable);
 };
 
-function priceCalculation() {
-  document.getElementById("blockPrice").style.display = "block";
-  document.getElementById("coursesnumber").disabled = true;
-  document.getElementById("membershiptype").disabled = true;
-  document.getElementById("course_pay").disabled = true;
-  document.getElementById("firstname_pay").disabled = true;
-  document.getElementById("email_payment").disabled = true;
-  document.getElementById("newmember").disabled = true;
-  
-
-  var membershiptype =  $("#membershiptype option:selected").text();
-  var coursesnumber =  $("#coursesnumber option:selected").text();
-  var selected_membership = coursesnumber+"-"+membershiptype;
-  console.log("selected_membership");
-  console.log(selected_membership);
-
-  var price_membership = dict_prices[selected_membership];
-
-  var price_membership_monthly = dict_prices_monthly[selected_membership];
-
-  document.getElementById('price_course').value = price_membership;
-  document.getElementById('pricemonthly').value = price_membership_monthly;
-
-  const element = document.getElementById('paypal-button-container');
-  element.innerHTML = '';
-  document.getElementById("price_shield").style.display = "none";
-
-  const bank = document.getElementById('bank-button-container');
-  bank.innerHTML = ''
-  document.getElementById("selectPriceAgain").disabled = true;
-  document.getElementById("selectPriceAgain").style.display = "none";
-  document.getElementById("blockPrice").disabled = false;
-  document.getElementById("addPaypal").disabled = true;
-  document.getElementById("addBank").disabled = true;
-
-  document.getElementById("addPaypal").style.display = "none";
-  document.getElementById("addBank").style.display = "none";
-  document.getElementById("sendPaymentEmail").style.display = "none";
-
-  document.getElementById("selectPriceAgain").disabled = false;
-  document.getElementById("selectPriceAgain").style.display = "block";
-  document.getElementById("getPrice").disabled = true;
-  document.getElementById("getPrice").style.display = "none";
-
-  
- };
+function selectMembership() {
+  document.getElementById("stripe-container").style.display = "block";
+  document.getElementById("payment-block").style.display = "none";
+}
 
  function blockPriceF() {
   document.getElementById("addPaypal").style.display = "block";
   document.getElementById("addBank").style.display = "block";
+  document.getElementById("addStripe").style.display = "block";
+  document.getElementById("addStripe").disabled = false;
   document.getElementById("addPaypal").disabled = false;
   document.getElementById("addBank").disabled = false;
-
- 
   document.getElementById("coursesnumber").disabled = true;
   document.getElementById("membershiptype").disabled = true;
   document.getElementById("course_pay").disabled = true;
@@ -723,19 +752,22 @@ function priceCalculation() {
   document.getElementById("email_payment").disabled = true;
   document.getElementById("newmember").disabled = true;
   document.getElementById("blockPrice").style.display = "none";
+  //document.getElementById("getMembership").disabled = true;
 
  };
 
-
-
-
  function enablePriceCalculation() {
-  document.getElementById("getPrice").disabled = false;
-  document.getElementById("getPrice").style.display = "block";
-  document.getElementById("blockPrice").disabled = true;
-  document.getElementById("blockPrice").style.display = "none";
+  //document.getElementById("getPrice").disabled = false;
+  //document.getElementById("getPrice").style.display = "block";
+  document.getElementById('smart-button-container').style.display = 'none';
+  const bank = document.getElementById('bank-button-container').style.display = 'none';
+  const element = document.getElementById('paypal-button-container');
+  element.innerHTML = '';
+  document.getElementById("blockPrice").disabled = false;
+  document.getElementById("blockPrice").style.display = "block";
   document.getElementById("addPaypal").style.display = "none";
   document.getElementById("addBank").style.display = "none";
+  document.getElementById("addStripe").style.display = "none";
   document.getElementById("sendPaymentEmail").disabled = true;
   document.getElementById("sendPaymentEmail").style.display = "none";
 
@@ -764,8 +796,8 @@ function paypalProcess() {
 
   document.getElementById("selectPriceAgain").disabled = false;
   document.getElementById("selectPriceAgain").style.display = "block";
-  document.getElementById("getPrice").disabled = true;
-  document.getElementById("getPrice").style.display = "none";
+  //document.getElementById("getPrice").disabled = true;
+  //document.getElementById("getPrice").style.display = "none";
 
 
   document.getElementById("coursesnumber").disabled = true;
@@ -782,7 +814,7 @@ function paypalProcess() {
   document.getElementById('ItemOrdered').value = coursesnumber+"-"+membershiptype;
   document.getElementById('ItemOrdered').setAttribute( "price", price_class );
   document.getElementById('ItemOrdered').innerHTML = coursesnumber+"-"+membershiptype+" "+price_class+" EUR";
-
+  document.getElementById('smart-button-container').style.display = 'block';
 
 
   initPayPalButton();
@@ -889,7 +921,7 @@ onApprove: function(data, actions) {
     output.innerHTML = '<h3>Thank you for your payment!</h3>';
     document.getElementById('smart-button-container').style.display = 'none';
     document.getElementById('paypal-button-container').style.display = 'none';
-    document.getElementById('getPrice').disabled = 'true';
+    //document.getElementById('getPrice').disabled = 'true';
     document.querySelector(".paypal").disabled = 'true';
 
       //Elements to take
@@ -981,8 +1013,8 @@ function bankProcess() {
   document.getElementById("blockPrice").disabled = true;
   document.getElementById("selectPriceAgain").disabled = false;
   document.getElementById("selectPriceAgain").style.display = "block";
-  document.getElementById("getPrice").disabled = true;
-  document.getElementById("getPrice").style.display = "none";
+  //document.getElementById("getPrice").disabled = true;
+  //document.getElementById("getPrice").style.display = "none";
 
 
   console.log("Bank process")
@@ -1082,6 +1114,7 @@ displayTable += "</div>";
 displayTable += "</div>";
   const element = document.getElementById('bank-button-container');
   element.innerHTML = displayTable;
+  document.getElementById('bank-button-container').style.display = 'block';
 
 /// SEND EMAIL FOR PAYMENT
 console.log(course_pay);
@@ -1157,3 +1190,15 @@ function filterAll() {
   //document.querySelector(".Zouk").style.display = 'block';
   document.querySelector(".Workshop").style.display = 'block';
 }
+
+
+// STRIPE PAYMENT HANDLER
+//ABONNEMENTS FOR 6 and 12 Months
+//PAYMENTS FOR 3 MONTHS and Beginners Promotion
+//STRIPE LINKS FROM GOOGLE IMPORTIEREN
+//PREISE IN DER TABELEL DINAMISCH AUSFÜLLEN
+//NACH AUSWAHL ZUM FORMULAR
+//NACH FORMULAR ZUM AUSWAHL -- BANK/STRIPE > ABOS  ALL METHODS>PAY ALL
+//NACH ZAHLUNG EMAIL ZAHLUNGSBESTÄTIGUNG PAYPAL/STRIPE --BANK ZAHLUNGSAUFFORDERUNG
+//LINK EXAMPLE WITH PREFILLED OBJECTS
+//https://buy.stripe.com/test_28o17G3CZ2IH0tWcMO?prefilled_email=jenny%40example.com&prefilled_promo_code=20off&locale=de

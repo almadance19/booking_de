@@ -783,6 +783,11 @@ a {
   
   /* Button */
   
+  .p-card {
+    margin-top: 2x;
+    margin-bottom: 4px;
+  }
+   
   .button-box-card {
           display: inline-block;
           padding: 10px 20px;
