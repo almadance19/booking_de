@@ -26,12 +26,11 @@ function getInit() {
 // call API COURSES
 const url = 'https://script.google.com/macros/s/AKfycbwFcDRbzmC0LsFZBn2Z5EL5Vn5DdwcT7Llh94W2xIaFy8h-iaGaYa-Wot7PlC4hU8Mt/exec';
 
-
 const urluser =  'https://script.google.com/macros/s/AKfycbzWu6k32M7XjlK51cEYH-5qqO0Az5cHKI1zypbU_nHwFxzGGP2DmOa4U0u6FbY9AO-r/exec';
 
 const url_prices = 'https://script.google.com/macros/s/AKfycbxQJP0x0GEQQ7ZbdYxed1_EQfr5aRNonJWH82iEzg8wUn-M5cNy2l7yGZ2FPpx0Vz4D/exec';
 
-const url_payment = 'https://script.google.com/macros/s/AKfycbzkRaSM46kdGTL_2jrprBwmPcBf-sHjEQHwbTBTonJqkUinTJ4K3XEU891RN7yZj6k/exec';
+const url_payment = 'https://script.google.com/macros/s/AKfycbwDNQg1LmMXmX9hCQfNr6BltWYJwNIO664U5YgqbTyB7ZyMWFkxkd_Ky96YCMpHsAI/exec';
 
 //get buttons 
 const output = document.querySelector('.output');
@@ -152,7 +151,7 @@ function getPrices() {
         inputEl.style = "margin: 0px 4px 8px 3px;";
 
         inputEl.addEventListener('click', function() { 
-            Create_Payment_Form(val[0],val[2],val[5],val[6]); 
+            Create_Payment_Form(val[0],val[2],val[5],val[6],val[4]); 
         });
         document.getElementById(list[i].id).appendChild(inputEl); 
 
@@ -167,7 +166,7 @@ function getPrices() {
         inputEl.style = "margin: 0px 4px 8px 3px;";
 
         inputEl.addEventListener('click', function() { 
-          Create_Payment_Form_Abo(val[0],val[1],val[5],val[7]); 
+          Create_Payment_Form_Abo(val[0],val[1],val[5],val[7],val[4]); 
         });
         document.getElementById(list[i].id).appendChild(inputEl); 
 
@@ -192,17 +191,17 @@ function showMemberships(){
   btnBookaclass.style.display = "block";
 };
 
-function Create_Payment_Form(membership, price_total,nr_months,stripe_link) { 
+function Create_Payment_Form(membership, price_total,nr_months,stripe_link,nr_courses) { 
   //output.innerHTML = "membership " + membership + "price_month " + price_total+"price_total " + price_total+"nr_months " + nr_months;
-  paymentForm(membership, price_total,nr_months,stripe_link,"One-time payment"); 
+  paymentForm(membership, price_total,nr_months,stripe_link,"One-time payment",nr_courses); 
   document.getElementById("stripe-container").style.display = 'none';
   document.getElementById("payment-block").style.display = 'block';
 
 } 
 
-function Create_Payment_Form_Abo(membership, price_total,nr_months,stripe_link) { 
+function Create_Payment_Form_Abo(membership, price_total,nr_months,stripe_link,nr_courses) { 
   //output.innerHTML = "membership " + membership + "price_month " + price_total+"price_total " + price_total+"nr_months " + nr_months;
-  paymentForm(membership, price_total,nr_months,stripe_link,"Monthly Subscription");
+  paymentForm(membership, price_total,nr_months,stripe_link,"Monthly Subscription",nr_courses);
   document.getElementById("stripe-container").style.display = 'none';
   document.getElementById("payment-block").style.display = 'block';
 } 
@@ -264,7 +263,6 @@ function showStates(id,name,genre,lebel,adress,dia,day_nr,hora,fecha,details)
     displayTable += '</select>';
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
-    displayTable += '<label for="promocode" style="font-weight: bold">Membership / Mitgliedschaft</label>';
     displayTable += '<select class="custom-select" id="promocode">';
     displayTable += '<option>Regular Course</option>';
     displayTable += '<option>4-10er Karte</option>';
@@ -605,7 +603,7 @@ function bookClasses() {
 
 
 
-function paymentForm(membership, price_total,nr_months,stripe_link,payment_type)
+function paymentForm(membership, price_total,nr_months,stripe_link,payment_type,nr_courses)
 {
     document.querySelector(".section-1").style.display = 'block';
     var name_user = document.getElementById("User_name").value;
@@ -628,14 +626,13 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type)
     displayTable += "<div class=\"row\"> </div>";
     displayTable += '<form style="background-color:white;color:black">';
     displayTable += '<div class="form-row">';
-    displayTable += "<label for=\"disabledTextInput\" style=\"font-weight: bold\" >"+" "+"</label>";
+    displayTable += "<label for=\"disabledTextInput\" style=\"font-weight: bold\" >"+membership+" / "+payment_type+"</label>";
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
     displayTable += '<label for="firstname" style="font-weight: bold">Name</label>';
     displayTable += "<input type=\"text\" id=\"firstname_pay\" class=\"form-control\" Value=\""+name_user+"\" >";
     displayTable += '<small id="nameHelp" class="form-text text-muted" style="color:yellow" >** Check your name is correct.</small>';
     displayTable += '</div>';
-
     displayTable += '<div class="form-row">';
     displayTable += '<label for="course_pay" style="font-weight: bold">Course(s) / Kurs(e)</label>';
     displayTable += '<select class="custom-select" multiple data-live-search="true" id="course_pay"  >';
@@ -649,37 +646,15 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type)
     displayTable += '<option >Zouk Open Level</option>';
     displayTable += '<option >Flatrate</option>';
     displayTable += '</select>';
-    displayTable += '</div>';
-
+    displayTable += '</div>'; 
     displayTable += '<div class="form-row">';
-    displayTable += '<label for="membershiptype" style="font-weight: bold">Membership Type / Mitgliedschaftstyp</label>';
-    displayTable += '<select class="custom-select" id="membershiptype">';
-    displayTable += '<option value="1">1 Month Subscription</option>';
-    displayTable += '<option value="3">3 Months Subscription</option>';
-    displayTable += '<option value="6">6 Months Subscription</option>';
-    displayTable += '<option value="12">12 Months Subscription</option>';
-    displayTable += '<option value="3">4er Karte</option>';
-    displayTable += '<option value="6">10er Karte</option>';
-    displayTable += '</select>';
+    displayTable += "<input type=\"text\" id=\"nr_courses\" class=\"form-control\" style=\"display:none\"  Value=\""+nr_courses+"\" disabled>";
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
-    displayTable += '<label for="coursesnumber" style="font-weight: bold">Membership / Mitgliedschaft</label>';
-    displayTable += '<select class="custom-select" id="coursesnumber">';
-    displayTable += '<option value="1">1 Course/Kurs</option>';
-    displayTable += '<option value="2">2 Courses/Kurse</option>';
-    displayTable += '<option value="3">3 Courses/Kurse</option>';
-    displayTable += '<option value="5">Flatrate</option>';
-    displayTable += '</select>';
+    displayTable += "<input type=\"text\" id=\"nr_months\" class=\"form-control\"  style=\"display:none\" Value=\""+nr_months+"\" disabled>";
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
-    displayTable += '<label for="membership" style="font-weight: bold" >Selected Membership</label>';
-    displayTable += "<input type=\"text\" id=\"membership\" class=\"form-control\"   placeholder=\"Example +49 123 04235673\" Value=\""+membership+"\" disabled>";
-    displayTable += '<small id="newmemberlHelp" class="form-text text-muted" style="color:yellow" >** Optional value.</small>';
-    displayTable += '</div>';
-    displayTable += '<div class="form-row">';
-    displayTable += '<label for="payment_type" style="font-weight: bold" >Payment Type</label>';
-    displayTable += "<input type=\"text\" id=\"payment_type\" class=\"form-control\"   placeholder=\"Example +49 123 04235673\" Value=\""+payment_type+"\" disabled>";
-    displayTable += '<small id="newmemberlHelp" class="form-text text-muted" style="color:yellow" >** Optional value.</small>';
+    displayTable += "<input type=\"text\" id=\"membership\" class=\"form-control\" style=\"display:none\" Value=\""+membership+"\" disabled>";
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
     displayTable += '<label for="newmember" style="font-weight: bold" >Phone/Telefonnummer (optional) </label>';
@@ -692,12 +667,10 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type)
     displayTable += '<small id="emailHelp" class="form-text text-muted" style="color:yellow" >** Check your email is correct.</small>';
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
-    displayTable += '<label for="pricemonthly" style="font-weight: bold" >Price / Preis EUR (Monthly)</label>';
-    displayTable += "<input type=\"text\" id=\"pricemonthly\" class=\"form-control\" aria-describedby=\"pricemonthlyHelp\" Value=\""+price_total+"\" disabled>";
-    displayTable += '<small id="pricemonthlyHelp" class="form-text text-muted" style="color:yellow" >**monthly Price for 3/6/12 months subscriptions </small>';
+    displayTable += "<input type=\"text\" id=\"pricemonthly\" class=\"form-control\" style=\"display:none\" aria-describedby=\"pricemonthlyHelp\" Value=\""+price_total+"\" disabled>";
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
-    displayTable += '<label for="price" style="font-weight: bold" >Price / Preis EUR (Total)</label>';
+    displayTable += '<label for="price" style="font-weight: bold" >Price / Preis EUR</label>';
     displayTable += "<input type=\"text\" id=\"price_course\" class=\"form-control\" aria-describedby=\"priceHelp\" Value=\""+price_total+"\" disabled>";
     displayTable += '<small id="priceHelp" class="form-text text-muted" style="color:yellow" >**You can only pay monthly or all at once (3/6/12 months) with a Bank Regular Order </small>';
     displayTable += '</div>';
@@ -736,45 +709,42 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type)
 function selectMembership() {
   document.getElementById("stripe-container").style.display = "block";
   document.getElementById("payment-block").style.display = "none";
+  const bank = document.getElementById('bank-button-container').style.display = 'none';
+  bank = '';
+  const element = document.getElementById('paypal-button-container');
+  element.innerHTML = '';
 }
 
  function blockPriceF() {
   document.getElementById("addPaypal").style.display = "block";
   document.getElementById("addBank").style.display = "block";
-  document.getElementById("addStripe").style.display = "block";
-  document.getElementById("addStripe").disabled = false;
+  //document.getElementById("addStripe").style.display = "block";
+  //document.getElementById("addStripe").disabled = false;
   document.getElementById("addPaypal").disabled = false;
   document.getElementById("addBank").disabled = false;
-  document.getElementById("coursesnumber").disabled = true;
-  document.getElementById("membershiptype").disabled = true;
   document.getElementById("course_pay").disabled = true;
   document.getElementById("firstname_pay").disabled = true;
   document.getElementById("email_payment").disabled = true;
   document.getElementById("newmember").disabled = true;
   document.getElementById("blockPrice").style.display = "none";
-  //document.getElementById("getMembership").disabled = true;
 
  };
 
  function enablePriceCalculation() {
-  //document.getElementById("getPrice").disabled = false;
-  //document.getElementById("getPrice").style.display = "block";
   document.getElementById('smart-button-container').style.display = 'none';
   const bank = document.getElementById('bank-button-container').style.display = 'none';
+  bank.innerHTML = '';
   const element = document.getElementById('paypal-button-container');
   element.innerHTML = '';
   document.getElementById("blockPrice").disabled = false;
   document.getElementById("blockPrice").style.display = "block";
   document.getElementById("addPaypal").style.display = "none";
   document.getElementById("addBank").style.display = "none";
-  document.getElementById("addStripe").style.display = "none";
+  //document.getElementById("addStripe").style.display = "none";
   document.getElementById("sendPaymentEmail").disabled = true;
   document.getElementById("sendPaymentEmail").style.display = "none";
-
   document.getElementById("selectPriceAgain").disabled = true;
   document.getElementById("selectPriceAgain").style.display = "none";
-  document.getElementById("coursesnumber").disabled = false;
-  document.getElementById("membershiptype").disabled = false;
   document.getElementById("course_pay").disabled = false;
   document.getElementById("firstname_pay").disabled = false;
   document.getElementById("email_payment").disabled = false;
@@ -789,19 +759,11 @@ function paypalProcess() {
   //get payment data
   //get payment datum als due datum für bestehende kunde für neue kunde ist zahlungsdatum
   console.log("Paypal Process starting");
-  var membershiptype =  $("#membershiptype option:selected").text();
-  var coursesnumber =  $("#coursesnumber option:selected").text();
+  var membershiptype =  document.getElementById("membership").value;
   var price_class = Number(document.getElementById("price_course").value) +2;
-
-
   document.getElementById("selectPriceAgain").disabled = false;
   document.getElementById("selectPriceAgain").style.display = "block";
-  //document.getElementById("getPrice").disabled = true;
-  //document.getElementById("getPrice").style.display = "none";
 
-
-  document.getElementById("coursesnumber").disabled = true;
-  document.getElementById("membershiptype").disabled = true;
   document.getElementById("course_pay").disabled = true;
   document.getElementById("firstname_pay").disabled = true;
   document.getElementById("email_payment").disabled = true;
@@ -810,12 +772,10 @@ function paypalProcess() {
   document.getElementById("addBank").disabled = true;
   document.getElementById("blockPrice").disabled = true;
   
-
-  document.getElementById('ItemOrdered').value = coursesnumber+"-"+membershiptype;
+  document.getElementById('ItemOrdered').value = membershiptype;
   document.getElementById('ItemOrdered').setAttribute( "price", price_class );
-  document.getElementById('ItemOrdered').innerHTML = coursesnumber+"-"+membershiptype+" "+price_class+" EUR";
+  document.getElementById('ItemOrdered').innerHTML = membershiptype+" "+price_class+" EUR";
   document.getElementById('smart-button-container').style.display = 'block';
-
 
   initPayPalButton();
   //create a new user if new
@@ -921,18 +881,16 @@ onApprove: function(data, actions) {
     output.innerHTML = '<h3>Thank you for your payment!</h3>';
     document.getElementById('smart-button-container').style.display = 'none';
     document.getElementById('paypal-button-container').style.display = 'none';
-    //document.getElementById('getPrice').disabled = 'true';
     document.querySelector(".paypal").disabled = 'true';
 
       //Elements to take
     var newmember = document.getElementById("newmember").value;
-    var membershiptype =  $("#membershiptype option:selected").text();
-    var coursesnumber =  $("#coursesnumber option:selected").text();
+    var membershiptype =  document.getElementById("membership").value;
     var firstname_pay = document.getElementById("firstname_pay").value;
     var email_payment = document.getElementById("email_payment").value;
-    var course_pay = $('#course_pay').val(); // document.getElementById("course_pay").value;
-    var membershiptype_nr = document.getElementById("membershiptype").value;
-    var coursesnumber_nr = document.getElementById("coursesnumber").value;
+    var course_pay = $('#course_pay').val(); 
+    var membershiptype_nr = document.getElementById("nr_months").value;
+    var coursesnumber_nr = document.getElementById("nr_courses").value;
     var course_price = document.getElementById("price_course").value;
 
     //GET DATE
@@ -951,17 +909,12 @@ onApprove: function(data, actions) {
 
 
     console.log('This person paid',firstname_pay, ", ",email_payment, ", ",idinput.value );
-    //document.querySelector(".section-2").style.display = 'block'; 
-    //document.getElementById('pay-form-container').style.display = 'none';
-    //document.querySelector(".paypal").style.display = 'none';
 
-
-    let arr_pay = [String(newmember),idinput.value,firstname_pay,coursesnumber+" "+membershiptype,currentDate,course_price,"Paypal",false,"",String(year)+String(month),currentDate,"Kein",email_payment,"nein","",course_pay.toString(),coursesnumber_nr,membershiptype_nr,"",currentDate,future_date,"active","nein","FFM"];
+    let arr_pay = [String(newmember),idinput.value,firstname_pay,membershiptype,currentDate,course_price,"Paypal",false,"",String(year)+String(month),currentDate,"Kein",email_payment,"nein","",course_pay.toString(),coursesnumber_nr,membershiptype_nr,"",currentDate,future_date,"active","nein","FFM"];
     console.log(arr_pay);
 
     sDataPay(arr_pay);
     // Or go to another URL:  actions.redirect('thank_you.html');
-
   });
 },
 onError: function(err) {
@@ -974,11 +927,7 @@ onError: function(err) {
     // Save Booking hl
     function sDataPay(arr) {
       console.log(arr);
-      //e.preventDefault();
-       //repMessage.textContent = "Sending";
-       //let val1 = iName.value || 'unknown';
-       //let val2 = iMes.value || 'Message';
-       //btnSave.style.display = 'none';
+
        let formData = new FormData();
        formData.append('data', JSON.stringify(arr));
        console.log("posting registration in API")
@@ -1001,11 +950,9 @@ function bankProcess() {
   //create a new user if new
   //create a new payment not paid
   //send a email with payment details 
-
+ 
   document.getElementById("addBank").disabled = true;
   document.getElementById("addPaypal").disabled = true;
-  document.getElementById("coursesnumber").disabled = true;
-  document.getElementById("membershiptype").disabled = true;
   document.getElementById("course_pay").disabled = true;
   document.getElementById("firstname_pay").disabled = true;
   document.getElementById("email_payment").disabled = true;
@@ -1013,29 +960,22 @@ function bankProcess() {
   document.getElementById("blockPrice").disabled = true;
   document.getElementById("selectPriceAgain").disabled = false;
   document.getElementById("selectPriceAgain").style.display = "block";
-  //document.getElementById("getPrice").disabled = true;
-  //document.getElementById("getPrice").style.display = "none";
-
 
   console.log("Bank process")
   document.querySelector(".section-1").style.display = 'block';
   var firstname_pay = document.getElementById("firstname_pay").value;
-  var membershiptype =  $("#membershiptype option:selected").text();
-  var coursesnumber =  $("#coursesnumber option:selected").text();
+  var membershiptype =  document.getElementById("membership").value;
   var course_price = document.getElementById("price_course").value;
   document.querySelector(".section-2").style.display = 'none';
 
 
-  /// BEZAHLUNG newmember
+  /// BEZAHLUNG 
   var newmember = document.getElementById("newmember").value;
-  
   var email_payment = document.getElementById("email_payment").value;
-  var course_pay = $('#course_pay').val(); // document.getElementById("course_pay").value;
-  var membershiptype_nr = document.getElementById("membershiptype").value;
-  var coursesnumber_nr = document.getElementById("coursesnumber").value;
+  var course_pay = $('#course_pay').val(); 
+  var membershiptype_nr = document.getElementById("nr_months").value;
+  var coursesnumber_nr = document.getElementById("nr_courses").value;
   var course_price = document.getElementById("price_course").value;
-  var course_price_monthly = document.getElementById("pricemonthly").value;
-
 
   //GET DATE
   const date = new Date();
@@ -1060,12 +1000,8 @@ function bankProcess() {
     button_message =  "Send me Payment Details Email";
   }
 
-
   var beginner_3_months = dict_prices["Beginners 1 Course - 3 Months"];
   var beginner_6_months = dict_prices["Beginners 1 Course - 6 Months"];
-  var beginner_12_months = dict_prices["Beginners 1 Course - 12 Months"] ;
-
-  
 
   btnBookaclass.style.display = 'block';
 
@@ -1078,16 +1014,16 @@ function bankProcess() {
     displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Many thanks for registering to our course(s): "+firstname_pay+"</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"> </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Course(s): <strong>"+course_pay+" </strong>.</p>";
-displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Membership Type: <strong>"+coursesnumber+" "+membershiptype+"</strong>.</p>";
+displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Membership Type: <strong>"+membershiptype+"</strong>.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"> </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Please complete the order by transfering the payment to our bank account or just bring the money on cash before your next class:</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Total Amount: <strong>"+course_price+" EUR</strong><br />Kontoinhaber: Ivan Eduardo Millan Jorge<br />IBAN: DE47 1001 1001 2620 4751 14<br />BIC: NTSBDEB1XXX<br />Verwendungszweck: Tanzkurs-"+currentDate+"-"+firstname_pay+"</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"><br />Or pay via Paypal <br />Account: millan.jorge.ie@gmail.com<br />Message: Tanzkurs-"+currentDate+"-"+firstname_pay+"</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Alternatively pay via Paypal as a Friend without the paypal fee.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">After payment you will get your digital confirmation within the next 24 hrs.</p>";
-displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"><br />3/6/12 Months Subscription:<br />You can create a regular transfer order with your bank or paypal paying monthly: <strong>"+course_price_monthly+" EUR</strong>.</p>";
+displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"><br />3/6/12 Months Subscription:<br />You create a regular transfer order with your bank or paypal paying monthly.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"> </p>";
-displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Check if we have current discounts for Beginners.<br />1 Beginners Course - 3 Months (Total Amount): "+beginner_3_months+" EUR .<br /> 1 Beginners Course - 6 Months (Total Amount): "+beginner_6_months+" EUR .<br /> 1 Beginners Course - 12 Months (Total Amount): "+beginner_12_months+" EUR. </p>";
+displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Check if we have current discounts for Beginners.<br />1 Beginners Course - 3 Months (Total Amount): "+beginner_3_months+" EUR .<br /> 1 Beginners Course - 6 Months (Total Amount): "+beginner_6_months+" EUR. </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Your Subscription will be active after payment. Feel free to write back if you have any questions.<br />We are looking forward to dancing with you!</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"> </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\"> </p>";
@@ -1096,7 +1032,7 @@ displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\
 displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\">Vielen Dank für Deine Anmeldung zu unserem Kurs(en). </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\"> </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\">Kurs: <strong>"+course_pay+" </strong>.</p>";
-displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\">Mitgliedschaftstyp: <strong>"+coursesnumber+" "+membershiptype+"</strong>.</p>";
+displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\">Mitgliedschaftstyp: <strong>"+membershiptype+"</strong>.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%;text-align: left;\"> </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Um Deine Bestellung abzuschließen, kannst Du nun zur Zahlung übergehen. Bitte überweise den entsprechenden Betrag auf unser Bankkonto oder bring das Geld vor deiner nächsten Kurstunde:</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"><br />Gesamtbeitrag: <strong>"+course_price+" EUR</strong><br />Kontoinhaber: Ivan Eduardo Millan Jorge<br />IBAN: DE47 1001 1001 2620 4751 14<br />BIC: NTSBDEB1XXX<br />Verwendungszweck: Tanzkurs-"+currentDate+"-"+firstname_pay+"</p>";
@@ -1104,9 +1040,9 @@ displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Man kann Paypal-Zahlung als Freunde ohne die extra Paypal-Gebühren tätigen. Also gleiche Summe als bei der Banküberweisung</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Du bekommst eine Zahlungsbestätigung per Email spätestens 24 hr nach Zahlungseingang.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"> </p>";
-displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"><br />3/6/12 Monate-Mitgliedschaft:<br />Es ist möglich, eine Überweisungsauftrag bei der Bank oder Paypal einrichten und monatlich <strong>"+course_price_monthly+" EUR</strong> bezahlen.";
+displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"><br />3/6/12 Monate-Mitgliedschaft:<br />Überweisungsauftrag bei der Bank oder Paypal einrichten und monatlich bezahlen.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\"> </p>";
-displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Gerne nach Rabattierte Preise für Anfängerkurse hier unten prüfen.<br /> 1 Anfängerkurs - 3 Monate (Gesamtbeitrag): "+beginner_3_months+" EUR .<br /> 1 Anfängerkurs - 6 Monate (Gesamtbeitrag):: "+beginner_6_months+" EUR .<br /> 1 Anfängerkurs - 12 Monate (Gesamtbeitrag): "+beginner_12_months+" EUR. </p>";
+displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Gerne nach Rabattierte Preise für Anfängerkurse hier unten prüfen.<br /> 1 Anfängerkurs - 3 Monate (Gesamtbeitrag): "+beginner_3_months+" EUR .<br /> 1 Anfängerkurs - 6 Monate (Gesamtbeitrag):: "+beginner_6_months+" EUR </p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Deine Mitgliedschaft wird aktiv nach Zahlungseingang. Schreib uns gerne wenn Du Fragen zu unseren Kursen / Anmeldungen hast.</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Liebe Grüße / Best</p>";
 displayTable +="<p style=\"font-size: 14px; line-height: 160%; text-align: left;\">Eduardo &amp; Natalia<br />Alma Dance Team</p>";
@@ -1121,7 +1057,7 @@ console.log(course_pay);
 
 payment_array.length = 0;
 
-payment_array.push(String(newmember),idinput.value,firstname_pay,coursesnumber+" "+membershiptype,currentDate,course_price,"Online NotPaidYet","","",String(year)+String(month),currentDate,"NotPaidYet",email_payment,"nein","",course_pay.toString(),coursesnumber_nr,membershiptype_nr,"",currentDate,future_date,"NotPaidYet","nein","FFM");
+payment_array.push(String(newmember),idinput.value,firstname_pay,membershiptype,currentDate,course_price,"Online NotPaidYet","","",String(year)+String(month),currentDate,"NotPaidYet",email_payment,"nein","",course_pay.toString(),coursesnumber_nr,membershiptype_nr,"",currentDate,future_date,"NotPaidYet","nein","FFM");
 
 console.log(payment_array);
 
@@ -1129,7 +1065,6 @@ document.getElementById("sendPaymentEmail").disabled = false;
 document.getElementById("sendPaymentEmail").style.display = 'block';
 
 return payment_array
-
 };
 
 //// BANK PAYMENT
@@ -1154,42 +1089,6 @@ function addMonths(date, months) {
 }
 
 
-
-function filterBachata() {
-  document.querySelector(".Bachata").style.display = 'none';
-  document.querySelector(".Salsa").style.display = 'block';
-  //document.querySelector(".Zouk").style.display = 'none';
-  document.querySelector(".Workshop").style.display = 'none';
-};
-
-
-function filterSalsa()  {
-  document.querySelector(".Bachata").style.display = 'none';
-  document.querySelector(".Salsa").style.display = 'block';
-  //document.querySelector(".Zouk").style.display = 'none';
-  document.querySelector(".Workshop").style.display = 'none';
-};
-
-function filterZouk()  {
-  document.querySelector(".Bachata").style.display = 'none';
-  document.querySelector(".Salsa").style.display = 'none';
-  //document.querySelector(".Zouk").style.display = 'block';
-  document.querySelector(".Workshop").style.display = 'none';
-};
-
-function filterWorkshops()  {
-  document.querySelector(".Bachata").style.display = 'none';
-  document.querySelector(".Salsa").style.display = 'none';
-  //document.querySelector(".Zouk").style.display = 'none';
-  document.querySelector(".Workshop").style.display = 'block';
-};
-
-function filterAll() {
-  document.querySelector(".Bachata").style.display = 'block';
-  document.querySelector(".Salsa").style.display = 'block';
-  //document.querySelector(".Zouk").style.display = 'block';
-  document.querySelector(".Workshop").style.display = 'block';
-}
 
 
 // STRIPE PAYMENT HANDLER
