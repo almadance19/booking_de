@@ -84,9 +84,9 @@ function getData() {
         displayTable += '<thead  class=\"thead-dark\" >';
         displayTable += "<tr>";
         displayTable += "<th></th>";
-        displayTable += "<th>Kurs/Course</th>";
+        displayTable += "<th>Course</th>";
         displayTable += "<th>Day/Time</th>";
-        displayTable += "<th>Date/Datum</th>";
+        displayTable += "<th>Day/Date</th>";
         displayTable += "</tr>";
         displayTable += '</thead>';
         var coma = ",";
@@ -100,7 +100,7 @@ function getData() {
     data.posts.forEach(function (val) {
       if (val[10]==true && val[12]=="NEIN" ) {
         displayTable += "<tr class=\""+val[2]+"\" >";
-        displayTable += "<td><input type=\"button\" value=\"Anmelden\" class=\"btn btn-colour-1\" ";
+        displayTable += "<td><input type=\"button\" value=\"Register\" class=\"btn btn-colour-1\" ";
         displayTable += " onclick=\"showStates('"+val[0]+"',"+"'"+val[1]+"',"+"'"+val[2]+"',"+"'"+val[3]+"',"+"'"+val[4]+"',"+"'"+val[5]+"',"+"'"+val[6]+"',"+"'"+val[7]+"',"+"'"+val[8]+"',"+"'"+val[11]+"')\" /></td>";
         displayTable += "<td>"+val[1]+"</td>";
         displayTable += "<td>"+val[5]+" "+val[7]+"</td>";
@@ -146,7 +146,7 @@ function getPrices() {
 
         var inputEl = document.createElement('input'); 
         inputEl.type = 'button';
-        inputEl.className = "btn btn-primary"; 
+        inputEl.className = "btn btn-colour-1"; 
         inputEl.value = "One-time payment";
         inputEl.style = "margin: 0px 4px 8px 3px;";
 
@@ -161,7 +161,7 @@ function getPrices() {
         document.getElementById(list[i].id).getElementsByTagName('span')[0].innerHTML=" "+val[1]+" EUR EUR (Monthly)";
         var inputEl = document.createElement('input'); 
         inputEl.type = 'button';
-        inputEl.className = "btn btn-primary"; 
+        inputEl.className = "btn btn-colour-1"; 
         inputEl.value = "Monthly Subscription";
         inputEl.style = "margin: 0px 4px 8px 3px;";
 
@@ -316,6 +316,7 @@ function getUser() {
           var name_user = val[3] 
 
           if (name_user == 'No Active User') {
+          document.getElementById("name_display").style.display="none";
           document.getElementById("name_display").innerHTML = val[3];
           document.getElementById("email_display").innerHTML = email_value;
           document.getElementById("user_message").innerHTML = "Not Registered Yet! You can Book a Trial Class in the Schedule below or Register a Membership";
@@ -337,6 +338,7 @@ function getUser() {
 
           } 
           else {
+          document.getElementById("name_display").style.display="block";
           document.getElementById("name_display").innerHTML = val[3];
           document.getElementById("email_display").innerHTML = email_value;
           document.getElementById("user_message").innerHTML = "Make a Payment, check your Payment History or check your Membership Status";
@@ -360,6 +362,9 @@ function getUser() {
         });
         showPayment(data.activepayment);
         showAllePayments(data.historypayments);
+        //document.getElementById("postcard__tagbox").style.textAlign = "row";
+        document.getElementById("button-container").className = "col";
+        document.getElementById("button-container").style.textAlign = "center";
         //document.querySelector(".section-1").style.display = 'none';
         //document.querySelector(".section-2").style.display = 'block';
         //document.getElementById("stripe-container").style.display = 'none';
@@ -659,7 +664,6 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type,
     displayTable += '<div class="form-row">';
     displayTable += '<label for="newmember" style="font-weight: bold" >Phone/Telefonnummer (optional) </label>';
     displayTable += "<input type=\"phone\" id=\"newmember\" class=\"form-control\"   placeholder=\"Example +49 123 04235673\" Value=\""+""+"\" >";
-    displayTable += '<small id="newmemberlHelp" class="form-text text-muted" style="color:yellow" >** Optional value.</small>';
     displayTable += '</div>';
     displayTable += '<div class="form-row">';
     displayTable += '<label for="emaiemail_paymentl" style="font-weight: bold" >Email (mandatory/erforderlich) </label>';
@@ -683,6 +687,10 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type,
     displayTable += " onclick=\"blockPriceF()\" />";
     displayTable += '</div>';
     displayTable += '<div class="form-group col-md-3">';
+    displayTable += "<input type=\"button\" value=\"Select Membership Again\" id=\"getMembership\" class=\"btn btn-dark\" ";
+    displayTable += " onclick=\"selectMembership()\" />";
+    displayTable += '</div>';
+    displayTable += '<div class="form-group col-md-3">';
     displayTable += "<a class=\"btn btn-dark\" href=\""+stripe_link+"\" id=\"addStripe\" style=\"display:none;text-align:left\">Pay with Stripe</a>";
     displayTable += '</div>';
     displayTable += '<div class="form-group col-md-3">';
@@ -696,10 +704,6 @@ function paymentForm(membership, price_total,nr_months,stripe_link,payment_type,
     displayTable += '<div class="form-group col-md-3">';
     displayTable += "<input type=\"button\" value=\"Register & Send me Email with Payment Infos\" style=\"display:none\"  id=\"sendPaymentEmail\" class=\"btn btn-dark\" ";
     displayTable += " onclick=\"bankProcess_sendEmail()\" / disabled>";
-    displayTable += '</div>';
-    displayTable += '<div class="form-group col-md-3">';
-    displayTable += "<input type=\"button\" value=\"Select Membership Again\" id=\"getMembership\" class=\"btn btn-dark\" ";
-    displayTable += " onclick=\"selectMembership()\" />";
     displayTable += '</div>';
     displayTable += "</div>";
     displayTable += "</div>";
