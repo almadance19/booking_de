@@ -197,6 +197,7 @@ function Create_Payment_Form(membership, price_total,nr_months,stripe_link,nr_co
   document.getElementById("stripe-container").style.display = 'none';
   document.getElementById("payment-block").style.display = 'block';
 
+  document.getElementById('sect1').scrollIntoView();
 } 
 
 function Create_Payment_Form_Abo(membership, price_total,nr_months,stripe_link,nr_courses) { 
@@ -204,6 +205,8 @@ function Create_Payment_Form_Abo(membership, price_total,nr_months,stripe_link,n
   paymentForm(membership, price_total,nr_months,stripe_link,"Monthly Subscription",nr_courses);
   document.getElementById("stripe-container").style.display = 'none';
   document.getElementById("payment-block").style.display = 'block';
+
+  document.getElementById('sect1').scrollIntoView();
 } 
 
 

@@ -175,7 +175,7 @@
             <!-- <h2>19th - 22th April 2024<br><span>YOU CANNOT MISS THIS EXPERIENCE</span></h2> -->
             <!-- p -->
             <p>
-              Experience the Unforgettable Frankfurt Bachata Festival - Level Up!
+              We are more than a Dance School!
             </p>
           </div>
         </div>
@@ -198,12 +198,13 @@
       <div class="col" style="font-weight: bold" >
         <div class="col" style="font-weight: bold" >
           </br>
-          <h5 >1. Enter your Email to book a Trial Class, register for the first time or see your Membership Information.</h5>
+          </br>
+          <h5 >1. Enter your Email to book a Trial Class, register for the first time or manage your Membership.</h5>
           </br>
           <form >
             <div class="form-group">
               <input type="email" name="email" class="form-control" placeholder="Enter your email">
-              <p class="note">By clicking send link you agree to receive message.</p>
+              <p class="note">By clicking send link you agree to receive booking message.</p>
             </div>
           </form>
           <button class="btn btn-dark emailer">ENTER EMAIL</button>
@@ -239,7 +240,7 @@
 
 
 
-  <section class="section-1">
+  <section class="section-1" id="sect1">
     <div class="col" style="font-weight: bold" >
 
       <div class="container-fluid" id="tableContainer">
@@ -254,6 +255,114 @@
         <input type="hidden" id="User_nextpayment" value="Not Registered yet">
       </div>
     </br>
+
+  <!-- ----MEMBERSHIP BLOCK ---- -->
+    <div id="stripe-container" style="display: none" >
+      <h1 style="text-align: center"><strong> Start/Update your Membership</strong></h1>
+       <div  class="row">
+        <div class="col-sm">
+           <div class="card">
+              <div class="card-body">
+                 <h5 class="card-title">3 Months Subscription</h5>
+                 <div class="price-container" id="1 Course/Kurs-3 Months Subscription">
+                    <p class="card-text p-card">1 Class per Week<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="2 Courses/Kurse-3 Months Subscription">
+                    <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="3 Courses/Kurse-3 Months Subscription">
+                    <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="Flatrate-3 Months Subscription">
+                    <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="col-sm">
+           <div class="card">
+              <div class="card-body">
+                 <h5 class="card-title">6 Months Subscription</h5>
+                 <div class="price-container" id="1 Course/Kurs-6 Months Subscription">
+                    <p class="card-text p-card">1 Class per Week<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="2 Courses/Kurse-6 Months Subscription">
+                    <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="3 Courses/Kurse-6 Months Subscription">
+                    <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="Flatrate-6 Months Subscription">
+                    <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+             <div class="card-body">
+                <h5 class="card-title">12 Months Subscription</h5>
+                <div class="price-container" id="1 Course/Kurs-12 Months Subscription">
+                   <p class="card-text p-card">1 Class per Week<span style="font-weight:bold"></span></p>
+                </div>
+                <div class="price-container" id="2 Courses/Kurse-12 Months Subscription">
+                   <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
+                </div>
+                <div class="price-container" id="3 Courses/Kurse-12 Months Subscription">
+                   <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
+                </div>
+                <div class="price-container" id="Flatrate-12 Months Subscription">
+                   <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
+                </div>
+             </div>
+          </div>
+       </div>
+        <div class="col-sm">
+           <div class="card">
+              <div class="card-body">
+                 <h5 class="card-title">Promotions/Individual Classes</h5>
+                 <div class="price-container" id="4er Karte">
+                    <p class="card-text p-card">4 Classes Membership Card<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="10er Karte">
+                    <p class="card-text p-card">10 Classes Membership Card<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="Beginners 1 Course - 3 Months">
+                    <p class="card-text p-card">1 Beginner Course 3 Months Subscription<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="Beginners 1 Course - 6 Months">
+                    <p class="card-text p-card">1 Beginner Course 6 Months Subscription<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="Beginners 1 Course - 3 Months Couple">
+                    <p class="card-text p-card">1 Couple Beginner Course 3 Months Subscription<span style="font-weight:bold"></span></p>
+                 </div>
+                 <div class="price-container" id="Beginners 1 Course - 6 Months Couple">
+                    <p class="card-text p-card">1 Couple Beginner Course 6 Months Subscription<span style="font-weight:bold"></span></p>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+             <div class="card-body">
+                <h5 class="card-title">1 Month Subscription</h5>
+                <div class="price-container" id="1 Course/Kurs-1 Month Subscription">
+                   <p class="card-text">1 Class per Week<span style="font-weight:bold"></span></p>
+                </div>
+                <div class="price-container" id="2 Courses/Kurse-1 Month Subscription">
+                   <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
+                </div>
+                <div class="price-container" id="3 Courses/Kurse-1 Month Subscription">
+                   <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
+                </div>
+                <div class="price-container" id="Flatrate-1 Month Subscription">
+                   <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
+                </div>
+             </div>
+          </div>
+       </div>
+      </div>
+      </div>
 
     <!--PAYMENT FORM  -->
     <div id="payment-block">
@@ -282,112 +391,6 @@
     </div>    
   </div>
 
-<div id="stripe-container" style="display: none" >
-<h1 style="text-align: center"><strong> Start/Update your Membership</strong></h1>
- <div  class="row">
-  <div class="col-sm">
-     <div class="card">
-        <div class="card-body">
-           <h5 class="card-title">3 Months Subscription</h5>
-           <div class="price-container" id="1 Course/Kurs-3 Months Subscription">
-              <p class="card-text p-card">1 Class per Week<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="2 Courses/Kurse-3 Months Subscription">
-              <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="3 Courses/Kurse-3 Months Subscription">
-              <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="Flatrate-3 Months Subscription">
-              <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
-           </div>
-        </div>
-     </div>
-  </div>
-  <div class="col-sm">
-     <div class="card">
-        <div class="card-body">
-           <h5 class="card-title">6 Months Subscription</h5>
-           <div class="price-container" id="1 Course/Kurs-6 Months Subscription">
-              <p class="card-text p-card">1 Class per Week<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="2 Courses/Kurse-6 Months Subscription">
-              <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="3 Courses/Kurse-6 Months Subscription">
-              <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="Flatrate-6 Months Subscription">
-              <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
-           </div>
-        </div>
-     </div>
-  </div>
-  <div class="col-sm">
-    <div class="card">
-       <div class="card-body">
-          <h5 class="card-title">12 Months Subscription</h5>
-          <div class="price-container" id="1 Course/Kurs-12 Months Subscription">
-             <p class="card-text p-card">1 Class per Week<span style="font-weight:bold"></span></p>
-          </div>
-          <div class="price-container" id="2 Courses/Kurse-12 Months Subscription">
-             <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
-          </div>
-          <div class="price-container" id="3 Courses/Kurse-12 Months Subscription">
-             <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
-          </div>
-          <div class="price-container" id="Flatrate-12 Months Subscription">
-             <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
-          </div>
-       </div>
-    </div>
- </div>
-  <div class="col-sm">
-     <div class="card">
-        <div class="card-body">
-           <h5 class="card-title">Promotions/Individual Classes</h5>
-           <div class="price-container" id="4er Karte">
-              <p class="card-text p-card">4 Classes Membership Card<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="10er Karte">
-              <p class="card-text p-card">10 Classes Membership Card<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="Beginners 1 Course - 3 Months">
-              <p class="card-text p-card">1 Beginner Course 3 Months Subscription<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="Beginners 1 Course - 6 Months">
-              <p class="card-text p-card">1 Beginner Course 6 Months Subscription<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="Beginners 1 Course - 3 Months Couple">
-              <p class="card-text p-card">1 Couple Beginner Course 3 Months Subscription<span style="font-weight:bold"></span></p>
-           </div>
-           <div class="price-container" id="Beginners 1 Course - 6 Months Couple">
-              <p class="card-text p-card">1 Couple Beginner Course 6 Months Subscription<span style="font-weight:bold"></span></p>
-           </div>
-        </div>
-     </div>
-  </div>
-  <div class="col-sm">
-    <div class="card">
-       <div class="card-body">
-          <h5 class="card-title">1 Month Subscription</h5>
-          <div class="price-container" id="1 Course/Kurs-1 Month Subscription">
-             <p class="card-text">1 Class per Week<span style="font-weight:bold"></span></p>
-          </div>
-          <div class="price-container" id="2 Courses/Kurse-1 Month Subscription">
-             <p class="card-text p-card">2 Classes per Week<span style="font-weight:bold"></span></p>
-          </div>
-          <div class="price-container" id="3 Courses/Kurse-1 Month Subscription">
-             <p class="card-text p-card">3 Classes per Week<span style="font-weight:bold"></span></p>
-          </div>
-          <div class="price-container" id="Flatrate-1 Month Subscription">
-             <p class="card-text p-card">All Classes<span style="font-weight:bold"></span></p>
-          </div>
-       </div>
-    </div>
- </div>
-</div>
-</div>
 
 
 
@@ -607,7 +610,7 @@
               </div>
               <ul class="contact_info">
                 <li><a href="mailto:">info@alma-dance.de</a></li>
-                <li><a href="tel: ">+49 163 9641730</a></li>
+                <li><a href="https://wa.me/message/AQECYWAZB43BJ1">+49 1639641730</a></li>
               </ul>
               <ul class="social_media">
                 <li><a href="#"><i class="icofont-facebook"></i></a></li>
